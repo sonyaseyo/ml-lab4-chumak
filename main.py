@@ -21,7 +21,20 @@ n_splits = int(input("введіть к-кість варіантів перем
 if n_splits < 3:
     raise ValueError("!!! к-кість варіантів перемішування >= 3.")
 
-shuffle_split = ShuffleSplit(n_splits=n_splits, test_size=0.2, random_state=42)
+shuffle_split = ShuffleSplit(n_splits=n_splits, test_size=.25, random_state=0)
+print(shuffle_split)
+np.set_printoptions(threshold=9)
+
+option = 2
+
+for i, (train_index, test_index) in enumerate(shuffle_split.split(data), start=1):
+    print(f"Варіант перемішування {i}:")
+    print(f"  Train: {train_index}, length={len(train_index)}")
+    print(f"  Test:  {test_index}, length={len(test_index)}\n")
+
+    if i == option - 1:
+        train, test = train_index, test_index
+
 
 splits = list(shuffle_split.split(data))
 train_indices, test_indices = splits[1]
@@ -41,8 +54,7 @@ print(f"розподіл значень у стовпці '{column_to_check}' у
 print(test_column_counts)
 
 # 5
-k = 3
-k_neighbors_classifier = KNeighborsClassifier(n_neighbors=k)
+k_neighbors_classifier = KNeighborsClassifier()
 
 X_train = train_data.drop(columns=['NObeyesdad'])
 y_train = train_data['NObeyesdad']
